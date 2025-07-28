@@ -10,6 +10,7 @@ function App() {
   let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
   let [title1, setTitle1]=useState(0);
+  let [newPost,setNewPost]=useState('');
 
 
   function titleChange() {
@@ -29,6 +30,17 @@ function App() {
     newLike[i]+=1;
     setLike(newLike);
     }
+  function addPost () {
+    // let newpost=[...title];
+    // newpost[i+1]=newPost;
+    setTitle([...title,newPost]);
+    setNewPost('');
+  }
+  function deletePost (i) {
+    let deletepost= title.filter((_, index) => index !== i);
+    setTitle(deletepost);
+
+  }
   
   return (
     <div className="App">
@@ -60,16 +72,26 @@ function App() {
           return (
           <div className="list" key={i}>
             <h4 onClick={()=>{ setModal(!modal); setTitle1(i)}}>{title[i]}
-              <span onClick={()=> { likeChange(i) }}>👍</span>
+              <span onClick={(e)=> { e.stopPropagation(); likeChange(i) }}>👍</span>
               {like[i]}
             </h4>
-            <p>2월 17일 발행</p>
+            <p>2월 17일 발행
+              <button onClick={()=>{
+                deletePost(i);
+              }}>삭제</button>
+            </p>
           </div>
           )
         }
         
       )
     }
+    <input onChange = {(e) => { setNewPost(e.target.value)} }/>
+      <button onClick={(e)=>{
+        {newPost.trim() != '' ? addPost():null};
+      }
+      }>발행</button>
+    
     {
       modal == true ? <Modal title={title} index={title1} color={'skyblue'} /> : null
     }
@@ -78,8 +100,6 @@ function App() {
   
 }
     
-
-
 function Modal(props) {
   return (
     <div className="modal" style={{background: props.color}}>
@@ -92,6 +112,21 @@ function Modal(props) {
       
     </div>
   )
+}
+
+class MAdal2 extends React.Component {
+  constructor () {
+    super ();
+    this.state= {
+      name : 'lee',
+      age : 21
+    }
+  }
+  render () {
+    return (
+      <div>으아아아.... 저는 {this.state}</div>
+    )
+  }
 }
 
 export default App
